@@ -35,19 +35,13 @@ class PersonController extends Controller
     {
         $request->validate([
             'first_name' => 'required|string|max:16',
-            'last_name' => 'string|max:32',
+            'last_name' => 'max:32',
             'gender' => ['required', 'in:male,female,other'],
             'birthday' => 'required|date|before:today',
-            'cpf' => 'required|digits:11|unique:'.Person::class,
+            'cpf' => 'required|digits:11|unique:people',
         ]);
 
-        Person::create([
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'gender' => $request->gender,
-            'birthday' => $request->birthday,
-            'cpf' => $request->cpf
-        ]);
+        Person::create($request->all());
 
         return redirect(route('people', absolute: false));
     }
@@ -63,17 +57,32 @@ class PersonController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Person $person)
+    public function edit($id)
     {
-        //
+        $person = Person::findOrFail($id);
+        return Inertia::render('People/Edit', [
+            'person' => $person->toArray()
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Person $person)
+    public function update(Request $request, $id)
     {
-        //
+        $person = Person::findOrFail($id);
+
+        $request->validate([
+            'first_name' => 'required|string|max:16',
+            'last_name' => 'max:32',
+            'gender' => ['required', 'in:male,female,other'],
+            'birthday' => 'required|date|before:today',
+            'cpf' => "required|digits:11|unique:people,cpf,{$id}",
+        ]);
+
+        $person->update($request->all());
+
+        return redirect(route('people', absolute: false));
     }
 
     /**

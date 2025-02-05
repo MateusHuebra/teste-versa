@@ -29,7 +29,7 @@ defineProps({
                 <div
                     class="overflow-hidden bg-white shadow-sm sm:rounded-lg"
                 >
-                    <div class="p-6 text-gray-900">
+                    <div class="px-6 pt-6 text-gray-900 flex justify-end">
                         
                         <Link :href="route('people.create')">
                             <PrimaryButton>

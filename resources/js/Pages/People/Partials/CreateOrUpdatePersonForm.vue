@@ -4,6 +4,9 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { useForm } from '@inertiajs/vue3';
+import { ref } from 'vue';
+
+const buttonText = ref('Create');
 
 const form = useForm({
     first_name: '',
@@ -13,9 +16,30 @@ const form = useForm({
     cpf: '',
 });
 
+const props = defineProps({
+    person: {
+        type: Object,
+        required: false,
+    }
+});
+
+if(props.person) {
+    form.first_name = props.person.first_name;
+    form.last_name = props.person.last_name;
+    form.gender = props.person.gender;
+    form.birthday = props.person.birthday;
+    form.cpf = props.person.cpf;
+    buttonText.value = 'Update'
+}
+
 const submit = () => {
+    if(props.person) {
+        form.patch(route('people.update', {id: props.person.id}));
+        return;
+    }
+
     form.post(route('people.store'));
-};
+}
 </script>
 
 <template>
@@ -101,7 +125,7 @@ const submit = () => {
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                 >
-                    Create
+                    {{ buttonText }}
                 </PrimaryButton>
             </div>
         </form>

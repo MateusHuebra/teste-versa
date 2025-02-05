@@ -60,14 +60,14 @@ const deletePerson = () => {
                     <td>{{ person.birthday_formatted }}</td>
                     <td>{{ person.cpf }}</td>
                     <td>
-                        <Link :href="route('people')">
+                        <Link :href="route('people.edit', {id: person.id})">
                             <PrimaryButton>
                                 Edit
                             </PrimaryButton>
                         </Link>
-                        <Link :href="route('people')" style="margin-left: 10px">
-                            <DangerButton @click.prevent="openDeleteModal(person)">Delete</DangerButton>
-                        </Link>
+                        <DangerButton @click="openDeleteModal(person)" style="margin-left: 10px">
+                            Delete
+                        </DangerButton>
                     </td>
                 </tr>
                 </tbody>
@@ -100,6 +100,11 @@ const deletePerson = () => {
 <style scoped>
 table {
   width: 100%;
+  border-radius: 10px;
+  border-spacing: unset;
+  border: 2px solid black;
+  border-collapse: separate;
+  overflow: hidden;
 }
 
 th, td {
