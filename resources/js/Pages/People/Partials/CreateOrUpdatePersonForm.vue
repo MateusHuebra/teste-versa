@@ -1,10 +1,9 @@
 <script setup>
-import GuestLayout from '@/Layouts/GuestLayout.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { useForm } from '@inertiajs/vue3';
 
 const form = useForm({
     first_name: '',
@@ -46,8 +45,6 @@ const submit = () => {
                     type="text"
                     class="mt-1 block w-full"
                     v-model="form.last_name"
-                    required
-                    autofocus
                     autocomplete="last_name"
                 />
 
@@ -76,7 +73,6 @@ const submit = () => {
                     class="mt-1 block w-full"
                     v-model="form.birthday"
                     required
-                    autofocus
                     autocomplete="birthday"
                 />
 
@@ -93,6 +89,7 @@ const submit = () => {
                     v-model="form.cpf"
                     autocomplete="cpf"
                     maxlength="11"
+                    placeholder="numbers only"
                 />
 
                 <InputError class="mt-2" :message="form.errors.cpf" />

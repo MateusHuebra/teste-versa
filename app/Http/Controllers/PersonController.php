@@ -79,8 +79,10 @@ class PersonController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Person $person)
+    public function destroy(Request $request)
     {
-        //
+        $person = Person::findOrFail($request->id);
+        $person->delete();
+        return ;
     }
 }
