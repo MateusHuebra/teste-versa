@@ -1,18 +1,15 @@
 <script setup>
 import DangerButton from '@/Components/DangerButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
-import { Link } from '@inertiajs/vue3';
+import { Link, router } from '@inertiajs/vue3';
 import { ref } from 'vue';
-import { useForm } from '@inertiajs/vue3';
+import axios from 'axios';
 import Modal from '@/Components/Modal.vue';
 
 const isModalOpen = ref(false);
 const personToBeDeleted = ref(null);
-const form = useForm({
-    person: '',
-});
 
-defineProps({
+const props = defineProps({
     people: {
         type: Array,
         required: true,
@@ -31,10 +28,12 @@ const closeDeleteModal = () => {
 }
 
 const deletePerson = () => {
-    form.delete(route('people.destroy', {id: personToBeDeleted.value.id}), {
-        preserveScroll: true,
-        onSuccess: () => closeDeleteModal()
-    });
+    axios.delete(route('people.destroy', { id: personToBeDeleted.value.id }))
+        .then(() => {
+            closeDeleteModal();
+            router.reload();
+        })
+        .catch(error => console.error('people.destroy failled:', error));
 }
 </script>
 
