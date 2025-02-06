@@ -20,12 +20,12 @@ class ScheduleExample extends Command
      *
      * @var string
      */
-    protected $description = 'Command description';
+    protected $description = 'Log the first name of the people updated up to 5 minutes ago';
 
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): void
     {
         info('Running task '.now());
 

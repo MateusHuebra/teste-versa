@@ -11,13 +11,15 @@ use App\Models\Person;
 class PersonTest extends TestCase
 {
     //use RefreshDatabase;
-    public function setUp(): void {
+    public function setUp(): void
+    {
         parent::setUp();
         $user = User::factory()->create();
         $this->actingAs($user);
     }
 
-    public function test_person_can_be_created() {
+    public function test_person_can_be_created(): void
+    {
         $data = [
             'first_name' => 'Mateus',
             'last_name' => 'Huebra',
@@ -32,7 +34,8 @@ class PersonTest extends TestCase
         $this->assertDatabaseHas('people', $data);
     }
 
-    public function test_person_cant_be_created_with_invalid_date() {
+    public function test_person_cant_be_created_with_invalid_date(): void
+    {
         $data = [
             'first_name' => 'Teste',
             'last_name' => '',

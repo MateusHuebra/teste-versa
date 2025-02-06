@@ -14,7 +14,7 @@ class PersonController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index() : Response
+    public function index(): Response
     {
         return Inertia::render('People/Index', [
             'people' => Person::all()->toArray()
@@ -48,17 +48,9 @@ class PersonController extends Controller
     }
 
     /**
-     * Display the specified resource.
-     */
-    public function show(Person $person)
-    {
-        //
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit($id): Response
     {
         $person = Person::findOrFail($id);
         return Inertia::render('People/Edit', [
@@ -69,7 +61,7 @@ class PersonController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $id): RedirectResponse
     {
         $person = Person::findOrFail($id);
 
@@ -78,7 +70,7 @@ class PersonController extends Controller
             'last_name' => 'max:32',
             'gender' => ['required', 'in:male,female,other'],
             'birthday' => 'required|date|before:today',
-            'cpf' => "required|digits:11|unique:people,cpf,{$id}",
+            'cpf' => ['required', 'digits:11', "unique:people,cpf,{$id}", new CPF],
         ]);
 
         $person->update($request->all());
@@ -89,10 +81,10 @@ class PersonController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Request $request)
+    public function destroy(Request $request): void
     {
         $person = Person::findOrFail($request->id);
         $person->delete();
-        return ;
+        return;
     }
 }
