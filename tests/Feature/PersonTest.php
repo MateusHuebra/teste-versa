@@ -21,7 +21,7 @@ class PersonTest extends TestCase
             'last_name' => 'Huebra',
             'gender' => 'male',
             'birthday' => '2001-04-13',
-            'cpf' => '12345678909',
+            'cpf' => '35271267083',
         ];
 
         $response = $this->post(route('people.store'), $data);
@@ -37,13 +37,31 @@ class PersonTest extends TestCase
             'last_name' => '',
             'gender' => 'male',
             'birthday' => '3001-04-13',
-            'cpf' => '12345678909',
+            'cpf' => '53009489005',
         ];
 
         $response = $this->post(route('people.store'), $data);
 
         $response->assertInvalid([
             'birthday' => 'The birthday field must be a date before today.'
+        ]);
+        $this->assertDatabaseMissing('people', $data);
+    }
+
+    public function test_person_cant_be_created_with_invalid_gender(): void
+    {
+        $data = [
+            'first_name' => 'Teste',
+            'last_name' => '',
+            'gender' => 'alien',
+            'birthday' => '2001-04-13',
+            'cpf' => '94653927073',
+        ];
+
+        $response = $this->post(route('people.store'), $data);
+
+        $response->assertInvalid([
+            'gender' => 'The selected gender is invalid.'
         ]);
         $this->assertDatabaseMissing('people', $data);
     }
