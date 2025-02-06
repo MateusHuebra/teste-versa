@@ -14,6 +14,11 @@ class CPF implements ValidationRule
      */
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
+        if (strlen($value) != 11) {
+            $fail('The cpf field must be 11 digits.');
+            return;
+        }
+
         if (preg_match('/(\d)\1{10}/', $value)) {
             $fail('Invalid CPF.');
             return;

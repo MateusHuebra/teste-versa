@@ -33,6 +33,8 @@ if(props.person) {
 }
 
 const submit = () => {
+    form.cpf = form.cpf.replace(/\D/g, '');
+
     if(props.person) {
         form.patch(route('people.update', {id: props.person.id}));
         return;
@@ -112,8 +114,8 @@ const submit = () => {
                     class="mt-1 block w-full"
                     v-model="form.cpf"
                     autocomplete="cpf"
-                    maxlength="11"
-                    placeholder="numbers only"
+                    placeholder="000.000.000-00"
+                    v-mask="'###.###.###-##'"
                 />
 
                 <InputError class="mt-2" :message="form.errors.cpf" />
