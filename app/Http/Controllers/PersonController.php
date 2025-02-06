@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Person;
+use App\Rules\CPF;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -38,7 +39,7 @@ class PersonController extends Controller
             'last_name' => 'max:32',
             'gender' => ['required', 'in:male,female,other'],
             'birthday' => 'required|date|before:today',
-            'cpf' => 'required|digits:11|unique:people',
+            'cpf' => ['required', 'digits:11', 'unique:people', new CPF],
         ]);
 
         Person::create($request->all());
