@@ -22,6 +22,22 @@ class PersonTest extends TestCase
         $response->assertOk();
     }
 
+    public function test_person_edit_page_is_displayed(): void
+    {
+        $data = [
+            'first_name' => 'Test',
+            'last_name' => '',
+            'gender' => 'male',
+            'birthday' => '2001-04-13',
+            'cpf' => '71543582036',
+        ];
+        
+        $person = Person::create($data);
+        $response = $this->get(route('people.edit', $person->id));
+
+        $response->assertOk();
+    }
+
     public function test_person_can_be_created(): void
     {
         $data = [
