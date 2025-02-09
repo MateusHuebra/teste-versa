@@ -24,15 +24,7 @@ class PersonTest extends TestCase
 
     public function test_person_edit_page_is_displayed(): void
     {
-        $data = [
-            'first_name' => 'Test',
-            'last_name' => '',
-            'gender' => 'male',
-            'birthday' => '2001-04-13',
-            'cpf' => '71543582036',
-        ];
-        
-        $person = Person::create($data);
+        $person = Person::factory()->create();
         $response = $this->get(route('people.edit', $person->id));
 
         $response->assertOk();
@@ -40,14 +32,7 @@ class PersonTest extends TestCase
 
     public function test_person_can_be_created(): void
     {
-        $data = [
-            'first_name' => 'Mateus',
-            'last_name' => 'Huebra',
-            'gender' => 'male',
-            'birthday' => '2001-04-13',
-            'cpf' => '35271267083',
-        ];
-
+        $data = Person::factory()->make()->getAttributes();
         $response = $this->post(route('people.store'), $data);
 
         $response->assertRedirect(route('people'));
@@ -56,14 +41,9 @@ class PersonTest extends TestCase
 
     public function test_person_cant_be_created_with_invalid_date(): void
     {
-        $data = [
-            'first_name' => 'Teste',
-            'last_name' => '',
-            'gender' => 'male',
+        $data = Person::factory()->make([
             'birthday' => '3001-04-13',
-            'cpf' => '53009489005',
-        ];
-
+        ])->getAttributes();
         $response = $this->post(route('people.store'), $data);
 
         $response->assertInvalid([
@@ -74,14 +54,9 @@ class PersonTest extends TestCase
 
     public function test_person_cant_be_created_with_invalid_gender(): void
     {
-        $data = [
-            'first_name' => 'Teste',
-            'last_name' => '',
+        $data = Person::factory()->make([
             'gender' => 'alien',
-            'birthday' => '2001-04-13',
-            'cpf' => '94653927073',
-        ];
-
+        ])->getAttributes();
         $response = $this->post(route('people.store'), $data);
 
         $response->assertInvalid([
@@ -92,71 +67,36 @@ class PersonTest extends TestCase
 
     public function test_person_can_be_updated(): void
     {
-        $data = [
-            'first_name' => 'Test',
-            'last_name' => '',
-            'gender' => 'male',
-            'birthday' => '2001-04-13',
-            'cpf' => '47538248021',
-        ];
-        
-        $updatedData = [
-            'first_name' => 'Updated',
-            'last_name' => 'Test',
-            'gender' => 'male',
-            'birthday' => '2001-08-23',
-            'cpf' => '47538248021',
-        ];
-
-        $person = Person::create($data);
+        $person = Person::factory()->create();
+        $updatedData = Person::factory()->make()->getAttributes();
         $response = $this->patch(route('people.update', $person->id), $updatedData);
 
         $response->assertRedirect(route('people'));
-        $this->assertDatabaseMissing('people', $data);
+        $this->assertDatabaseMissing('people', $person->getAttributes());
         $this->assertDatabaseHas('people', $updatedData);
     }
 
     public function test_person_cant_be_updated(): void
     {
-        $data = [
-            'first_name' => 'Test',
-            'last_name' => '',
-            'gender' => 'male',
-            'birthday' => '2001-04-13',
-            'cpf' => '94653927073',
-        ];
-        
-        $updatedData = [
-            'first_name' => 'Updated',
-            'last_name' => 'Test',
-            'gender' => 'male',
-            'birthday' => '2001-08-23',
-            'cpf' => '11111111111',
-        ];
-
-        $person = Person::create($data);
+        $person = Person::factory()->create();
+        $updatedData = Person::factory()->make([
+            'cpf' => '11111111111'
+        ])->getAttributes();
         $response = $this->patch(route('people.update', $person->id), $updatedData);
 
         $response->assertInvalid([
             'cpf' => 'Invalid CPF.'
         ]);
         $this->assertDatabaseMissing('people', $updatedData);
-        $this->assertDatabaseHas('people', $data);
+        $this->assertDatabaseHas('people', $person->getAttributes());
     }
 
     public function test_person_can_be_deleted(): void
     {
-        $data = [
-            'first_name' => 'Maria',
-            'last_name' => '',
-            'gender' => 'female',
-            'birthday' => '1998-12-15',
-            'cpf' => '94835392000',
-        ];
-        $person = Person::create($data);
+        $person = Person::factory()->create();
         $response = $this->delete(route('people.destroy', ['id' => $person->id]));
 
         $response->assertOk();
-        $this->assertDatabaseMissing('people', $data);
+        $this->assertDatabaseMissing('people', $person->getAttributes());
     }
 }

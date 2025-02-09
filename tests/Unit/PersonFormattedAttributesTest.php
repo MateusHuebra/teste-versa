@@ -14,15 +14,11 @@ class PersonFormattedAttributesTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-
-        $data = [
-            'first_name' => 'Test',
-            'last_name' => '',
-            'gender' => 'male',
+        
+        $this->person = Person::factory()->create([
             'birthday' => '2001-04-13',
             'cpf' => '87718524094',
-        ];    
-        $this->person = Person::create($data);
+        ]);
     }
 
     public function test_birthday_formatted_correctly(): void

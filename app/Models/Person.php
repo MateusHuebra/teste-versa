@@ -3,10 +3,12 @@
 namespace App\Models;
 
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Person extends Model
 {
+    use HasFactory;
     protected $fillable = ['first_name', 'last_name', 'gender', 'cpf', 'birthday'];
     protected $appends = ['birthday_formatted', 'cpf_formatted'];
 

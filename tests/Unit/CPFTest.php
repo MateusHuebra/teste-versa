@@ -32,6 +32,19 @@ class CPFTest extends TestCase
         $this->assertTrue($failed);
     }
     
+    public function test_invalid_by_length(): void
+    {
+        $rule = new CPF();
+        $failed = false;
+
+        $rule->validate('cpf', '123456789110', function($errorMessage) use (&$failed) {
+            $this->assertEquals('The cpf field must be 11 digits.', $errorMessage);
+            $failed = true;
+        });
+        
+        $this->assertTrue($failed);
+    }
+    
     public function test_invalid_by_repeated_digits(): void
     {
         $rule = new CPF();
