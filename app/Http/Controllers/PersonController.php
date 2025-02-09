@@ -17,7 +17,7 @@ class PersonController extends Controller
     public function index(): Response
     {
         return Inertia::render('People/Index', [
-            'people' => Person::all()->toArray()
+            'people' => Person::paginate(3)
         ]);
     }
 
@@ -54,7 +54,7 @@ class PersonController extends Controller
     {
         $person = Person::findOrFail($id);
         return Inertia::render('People/Edit', [
-            'person' => $person->toArray()
+            'person' => $person
         ]);
     }
 

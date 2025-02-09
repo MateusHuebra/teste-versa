@@ -1,7 +1,7 @@
 <script setup>
 import DangerButton from '@/Components/DangerButton.vue';
 import SecondaryButton from '@/Components/SecondaryButton.vue';
-import { Link, router } from '@inertiajs/vue3';
+import { Link, router, usePage } from '@inertiajs/vue3';
 import { ref } from 'vue';
 import axios from 'axios';
 import Modal from '@/Components/Modal.vue';
@@ -13,8 +13,7 @@ const props = defineProps({
     people: {
         type: Array,
         required: true,
-    },
-
+    }
 });
 
 const openDeleteModal = (person) => {
@@ -30,8 +29,13 @@ const closeDeleteModal = () => {
 const deletePerson = () => {
     axios.delete(route('people.destroy', { id: personToBeDeleted.value.id }))
         .then(() => {
-            closeDeleteModal();
-            router.reload();
+            let currentPage = usePage().props.people.current_page;
+            if(props.people.length === 1 && typeof currentPage !== 'undefined' && currentPage > 1) {
+                router.visit('/people?page='+ (currentPage-1));
+            } else {
+                closeDeleteModal();
+                router.reload();
+            }
         })
         .catch(error => console.error('people.destroy failled:', error));
 }
