@@ -91,7 +91,7 @@ npm run build
 composer run dev
 ```
 
-Para configurar o *cron*, siga os passos (exceto o primeiro) de [Configurando Scheduler](https://github.com/MateusHuebra/teste-versa?tab=readme-ov-file#configurando-scheduler).
+Para configurar o *cron*, siga os passos (exceto o primeiro) de [Configurando Scheduler](https://github.com/MateusHuebra/teste-versa?tab=readme-ov-file#configurando-scheduler), apenas mudando os caminhos das pastas para o do projeto.
 
 Crie um banco de dados chamado *testing* e rode os testes com:
 
