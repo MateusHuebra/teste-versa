@@ -44,6 +44,11 @@ Para as tarefas agendadas funcionarem automaticamente é necessário configurar 
 
 ```bash
 ./vendor/bin/sail root-shell
+```
+
+E então no *shell* aberto do *Docker*:
+
+```bash
 apt-get update && apt-get install cron -y
 service cron start
 crontab -e
@@ -64,3 +69,32 @@ Na pasta base, fora do *docker*, execute:
 ```bash
 ./vendor/bin/sail artisan test
 ```
+
+## Para rodar sem Docker:
+
+Em caso de problemas para executar o Docker e o Laravel Sail, você pode rodar o projeto na própria máquina executando os seguintes comandos:
+
+```bash
+git clone https://github.com/MateusHuebra/teste-versa.git
+cd teste-versa
+composer install
+npm install
+cp .env.example .env
+```
+
+Crie uma tabela no seu Banco de Dados local e altere as configurações de Banco de Dados (e URL caso necessário) no *.env*, e rode:
+
+```bash
+php artisan key:generate
+php artisan migrate
+composer run dev
+```
+
+Para configurar o *cron*, siga os passos (exceto o primeiro) de [Configurando Scheduler](https://github.com/MateusHuebra/teste-versa?tab=readme-ov-file#configurando-scheduler).
+
+E rode os testes com:
+
+```bash
+php artisan test
+```
+
